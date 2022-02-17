@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web\Home;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Message;
@@ -14,7 +14,8 @@ class GuestbookController extends Controller
      */
     public function render()
     {
-        $messages = Message::all();
+        $messages = Message::orderBy('created_at', 'DESC')->get();
+        
         return view('guestbook', [
             'messages' => $messages
         ]);
