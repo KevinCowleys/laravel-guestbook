@@ -75,4 +75,20 @@ class MessageController extends Controller
 
         return redirect('/');
     }
+
+    public function editMessageAdmin(Request $request)
+    {
+        $message = Message::firstWhere('id', '=', $request->route()->parameter('message_id'));
+
+        if (Auth::user()->is_admin) {
+            try {
+                $message->reply = $request->input('message');
+                $message->save();
+            } catch (\Exception $exception) {
+                return back()->with(['error' => 'Unable to save your message']);
+            }
+        }
+
+        return redirect('/');
+    }
 }

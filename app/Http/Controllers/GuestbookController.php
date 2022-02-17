@@ -14,8 +14,8 @@ class GuestbookController extends Controller
      */
     public function render()
     {
-        $messages = Message::orderBy('created_at', 'DESC')->get();
-        
+        $messages = Message::with('user')->orderBy('created_at', 'DESC')->get();
+
         return view('guestbook', [
             'messages' => $messages
         ]);
