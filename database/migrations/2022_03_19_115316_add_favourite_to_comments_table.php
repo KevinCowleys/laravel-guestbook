@@ -13,11 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('messages', function (Blueprint $table) {
-            $table->id();
-            $table->text('comment');
-            $table->bigInteger('user_id')->nullable()->unsigned()->index();
-            $table->foreign('user_id')->references('id')->on('users');
+        Schema::table('comments', function (Blueprint $table) {
+            $table->boolean('favourite')->default(0);
         });
     }
 
@@ -28,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('messages');
+        Schema::table('comments', function (Blueprint $table) {
+            $table->dropColumn('favourite');
+        });
     }
 };

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Message extends Model
+class Comment extends Model
 {
     use HasFactory;
 
@@ -18,21 +18,11 @@ class Message extends Model
     protected $fillable = [
         'comment',
         'user_id',
+        'message_id',
     ];
 
     public function user(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'user_id');
-    }
-
-    public function highlight(): HasOne
-    {
-        $favourite = $this->hasOne(Comment::class, 'message_id', 'id')->where('favourite', '=', 1);
-
-        if ($favourite->exists()) {
-            return $favourite;
-        } else {
-            return $this->hasOne(Comment::class, 'message_id', 'id')->oldest();
-        }
     }
 }

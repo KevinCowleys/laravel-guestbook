@@ -13,12 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
-Route::get('/', [\App\Http\Controllers\GuestbookController::class, 'render'])->name('home');
-Route::get('/dashboard', [\App\Http\Controllers\GuestbookController::class, 'render'])->name('dashboard');
+Route::get('/', [\App\Http\Controllers\GuestbookController::class, 'renderMain'])->name('home');
+
+Route::get('/message/{message_id}', [\App\Http\Controllers\GuestbookController::class, 'renderMessage'])->name('message.show');
 Route::post('/message', [\App\Http\Controllers\MessageController::class, 'createMessage']);
-Route::post('/message/{message_id}/reply/', [\App\Http\Controllers\MessageController::class, 'createAdminReply']);
-Route::post('/message/{message_id}/edit/', [\App\Http\Controllers\MessageController::class, 'editMessage']);
-Route::post('/message/{message_id}/editAdmin/', [\App\Http\Controllers\MessageController::class, 'editMessageAdmin']);
+Route::post('/message/{message_id}/edit', [\App\Http\Controllers\MessageController::class, 'editMessage']);
 Route::post('/message/{message_id}/delete', [\App\Http\Controllers\MessageController::class, 'deleteMessage']);
+
+Route::post('/message/{message_id}/reply', [\App\Http\Controllers\CommentController::class, 'createReply']);
+Route::post('/message/{message_id}/{comment_id}/edit', [\App\Http\Controllers\CommentController::class, 'editComment']);
+Route::post('/message/{message_id}/{comment_id}/star', [\App\Http\Controllers\CommentController::class, 'toggleFavourite']);
+Route::post('/message/{message_id}/{comment_id}/delete', [\App\Http\Controllers\CommentController::class, 'deleteComment']);

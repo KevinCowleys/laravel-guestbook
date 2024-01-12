@@ -13,11 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('messages', function (Blueprint $table) {
+        // Not needed, moving to comments to allow chains
+        Schema::table('messages', function (Blueprint $table) {
+            $table->dropColumn('reply');
+        });
+
+        Schema::create('comments', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
             $table->text('comment');
             $table->bigInteger('user_id')->nullable()->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users');
+            $table->bigInteger('message_id')->nullable()->unsigned()->index();
+            $table->foreign('message_id')->references('id')->on('messages');
         });
     }
 
@@ -28,6 +36,10 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('messages');
+        Schema::dropIfExists('comments');
+
+        Schema::table('messages', function (Blueprint $table) {
+            $table->string('reply')->nullable();
+        });
     }
 };
