@@ -19,8 +19,14 @@ class Comment extends Model
         'comment',
         'user_id',
         'message_id',
+        'favourite',
     ];
 
+    /**
+     * Gets the user linked to the comment
+     *
+     * @return HasOne
+     */
     public function user(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'user_id');

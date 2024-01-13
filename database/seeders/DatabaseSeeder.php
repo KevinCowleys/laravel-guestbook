@@ -16,11 +16,9 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        $this->faker = Faker::create();
+        $faker = Faker::create();
 
         $this->command->info('Creating Admin Account...');
 
@@ -47,20 +45,20 @@ class DatabaseSeeder extends Seeder
 
             $message = Message::create([
                 'user_id' => $user->id,
-                'comment' => $this->faker->sentence(rand(5, 50)),
+                'comment' => $faker->sentence(rand(5, 50)),
             ]);
 
             for ($x = 0; $x <= rand(0, 40); $x++) {
                 $is_admin = rand(0, 1);
                 if ($is_admin === 0) {
                     Comment::create([
-                        'comment' => $this->faker->sentence(rand(5, 50)),
+                        'comment' => $faker->sentence(rand(5, 50)),
                         'user_id' => $admin->id,
                         'message_id' => $message->id,
                     ]);
                 } else {
                     Comment::create([
-                        'comment' => $this->faker->sentence(rand(5, 50)),
+                        'comment' => $faker->sentence(rand(5, 50)),
                         'user_id' => $user->id,
                         'message_id' => $message->id,
                     ]);

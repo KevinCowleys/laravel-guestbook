@@ -20,19 +20,34 @@ class Message extends Model
         'user_id',
     ];
 
+    /**
+     * Gets the user linked to the message
+     *
+     * @return HasOne
+     */
     public function user(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
+    /**
+     * Get the favourite comment
+     *
+     * @return HasOne
+     */
     public function highlight(): HasOne
     {
-        $favourite = $this->hasOne(Comment::class, 'message_id', 'id')->where('favourite', '=', 1);
+        return $this->hasOne(Comment::class, 'message_id', 'id')->where('favourite', '=', 1);
+    }
 
-        if ($favourite->exists()) {
-            return $favourite;
-        } else {
-            return $this->hasOne(Comment::class, 'message_id', 'id')->oldest();
-        }
+    /**
+     * Get the oldest comment, ignoring the favourite one,
+     * this is done for eager loading reasons
+     *
+     * @return HasOne
+     */
+    public function firstComment(): HasOne
+    {
+        return $this->hasOne(Comment::class, 'message_id', 'id')->where('favourite', '!=', 1)->oldest();
     }
 }
